@@ -4,8 +4,7 @@ class CreateJobs < ActiveRecord::Migration[7.0]
       t.string :title
       t.string :description
       t.string :company
-      t.string :country
-      t.string :city
+      t.string :location
       t.string :job_type
       t.text :requirements
       t.datetime :published_at

@@ -9,6 +9,11 @@ gem "rails", "~> 7.0.4", ">= 7.0.4.3"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
+# Bootstrap
+gem 'bootstrap', '~> 4.3.1'
+gem 'bootstrap_form', '~> 4.0'
+gem 'bootstrap-datepicker-rails'
+
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 1.4"
 
@@ -70,3 +75,11 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+# Call 'byebug' anywhere in the code to stop execution and get a debugger console
+gem 'byebug', platforms: %i[mri mingw x64_mingw]
+
+gem 'jquery-validation-rails'
+gem 'jquery-form-rails'
+gem 'jquery-datatables-rails', '~> 3.4.0'
+gem 'jquery-rails'

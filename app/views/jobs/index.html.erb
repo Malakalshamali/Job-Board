@@ -1,14 +1,47 @@
 <p style="color: green"><%= notice %></p>
+<div class="form-title bg-primary text-white py-3">
+  <h2>Jobs Board</h2>
+</div>
 
-<h1>Jobs</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-4 p-3">
+      <%= link_to "New job", new_job_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>
 
-<div id="jobs">
+<div class="row">
   <% @jobs.each do |job| %>
-    <%= render job %>
-    <p>
-      <%= link_to "Show this job", job %>
-    </p>
+    <div class="col-md-4">
+      <div class="card job-card">
+        <div class="card-body">
+          <h5 class="card-title"><%= job.title %></h5>
+          <p class="card-text"><strong>Company:</strong> <%= job.company %></p>
+          <p class="card-text"><strong>Location:</strong> <%= job.location %></p>
+          <p class="card-text"><strong>Job Type:</strong> <%= job.job_type %></p>
+          <p class="card-text"><strong>Published At:</strong> <%= job.published_at %></p>
+          <p class="card-text"><strong>Expires At:</strong> <%= job.expires_at %></p>
+          <%= link_to 'View', job_path(job), class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New job", new_job_path %>
+<style>
+    .form-title {
+        color: #fff;
+        padding: 1rem;
+    }
+
+    .form-title h2 {
+        margin: 0;
+    }
+
+    .job-card {
+        margin-left: 50px;
+        margin-bottom: 20px;
+    }
+
+</style>

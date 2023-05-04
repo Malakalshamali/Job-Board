@@ -1,4 +1,4 @@
-<%= form_with(model: job) do |form| %>
+<%= form_with model: @job, local: true, class: "job-form" do |form| %>
   <% if job.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(job.errors.count, "error") %> prohibited this job from being saved:</h2>
@@ -10,8 +10,81 @@
       </ul>
     </div>
   <% end %>
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.label :company %>
+    <%= form.text_field :company, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.label :location %>
+    <%= form.text_field :location, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.label :job_type %>
+    <%= form.select :job_type, options_for_select(["full-time", "part-time", "contract"]), { prompt: "Select job type" }, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.label :requirements %>
+    <%= form.text_area :requirements, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.label :published_at %>
+    <%= form.date_field :published_at, class: 'form-control', required: true %>
+  </div>
+  <div class="form-group">
+    <%= form.label :expires_at %>
+    <%= form.date_field :expires_at, class: 'form-control', required: true %>
+  </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to 'Back', jobs_path, class: "btn btn-secondary" %>
+  </div>
   </div>
 <% end %>
+
+<style>
+    .job-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+</style>
+
+

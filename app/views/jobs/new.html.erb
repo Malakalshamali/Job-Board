@@ -1,9 +1,17 @@
-<h1>New job</h1>
-
+<div class="form-title bg-primary text-white py-3">
+<h2>New job</h2>
+</div>
+<br>
 <%= render "form", job: @job %>
 
-<br>
+<style>
+    .form-title {
+        color: #fff;
+        padding: 1rem;
+    }
 
-<div>
-  <%= link_to "Back to jobs", jobs_path %>
-</div>
+    .form-title h2 {
+        margin: 0;
+    }
+
+</style>
