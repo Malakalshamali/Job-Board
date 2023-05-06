@@ -83,3 +83,8 @@ gem 'jquery-validation-rails'
 gem 'jquery-form-rails'
 gem 'jquery-datatables-rails', '~> 3.4.0'
 gem 'jquery-rails'
+
+gem 'devise_token_auth'
+gem 'devise'
+
+gem "letter_opener", group: :development
