@@ -1,10 +1,57 @@
+<div class="form-title bg-primary text-white py-3">
+  <h4 style="margin-top: 10px; margin-left: 10px;"> Job applications for
+    <h3 style="margin-top: 10px; margin-left: 10px;" >  <%= @user.email %></h3></h4>
+</div>
+
+
 <p style="color: green"><%= notice %></p>
 
-<%= render @user %>
+<% if @job_applications.present? %>
+  <div class="row">
+    <% @job_applications.each do |job_application| %>
+      <div class="col-md-4">
+        <div class="card job-card">
+          <div class="card-body">
+            <% if job_application.not_seen? %>
+              <p class="card-text" style="float: right;"><span class="seen-icon">❌</span> <strong>Seen</strong>
+            <% else %>
+              <p class="card-text" style="float: right;"><span class="seen-icon">✅</span> <strong>Seen</strong>
+            <% end %>
+            <p class="card-text"></p>
+            <p class="card-text"><strong>Name:</strong> <%= job_application.name %></p>
+            <p class="card-text"><strong>Email:</strong> <%= job_application.email %></p>
+            <p class="card-text"><strong>Cover Letter:</strong> <%= job_application.cover_letter %></p>
+            <p class="card-text"><strong>Resume:</strong> <%= job_application.resume %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <h2>There are no job applications yet!</h2>
+<% end %>
 
-<div>
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
-
-  <%= button_to "Destroy this user", @user, method: :delete %>
+<div class="container-fluid">
+  <div class="row">
+    <%= link_to "Back to jobs", jobs_path, class: 'btn btn-secondary', style: 'margin-left: 50px;' %>
+  </div>
 </div>
+
+<style>
+    .form-title {
+        color: #fff;
+        padding: 1rem;
+    }
+
+    .form-title h2 {
+        margin: 0;
+    }
+
+    .job-card {
+        margin-left: 50px;
+        margin-right: 50px;
+        margin-bottom: 20px;
+    }
+
+</style>
+

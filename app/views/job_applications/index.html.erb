@@ -1,14 +1,62 @@
-<p style="color: green"><%= notice %></p>
+<div class="form-title bg-primary text-white py-3">
+  <h4>Job applications for
+    <h3> <%= @job.title %></h3></h4>
+</div>
 
-<h1>Job applications</h1>
+<br>
+<div class="container-fluid">
+  <%= link_to 'New Application', new_job_job_application_path(job_id: @job.id), class: 'btn btn-primary', style: 'float: right;' %>
+</div>
+<br>
+<br>
 
-<div id="job_applications">
+<div class="row">
   <% @job_applications.each do |job_application| %>
-    <%= render job_application %>
-    <p>
-      <%= link_to "Show this job application", job_application %>
-    </p>
+    <div class="col-md-4">
+      <div class="card job-card">
+        <div class="card-body">
+          <% if job_application.not_seen? %>
+            <p class="card-title"> <%= link_to 'Mark as Seen', mark_as_seen_job_job_application_path(job_id: @job.id, id: job_application.id), class: 'btn btn-primary', style: 'float: right;' %></p>
+          <% else %>
+            <p class="card-text" style="float: right;"><span class="seen-icon" >✅</span> <strong>Seen</strong>
+          <% end %>
+          <p class="card-text"></p>
+          <p class="card-text"><strong>Name:</strong> <%= job_application.name %></p>
+          <p class="card-text"><strong>Email:</strong> <%= job_application.email %></p>
+          <p class="card-text"><strong>Cover Letter:</strong> <%= job_application.cover_letter %></p>
+          <p class="card-text"><strong>Resume:</strong> <%= job_application.resume %></p>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New job application", new_job_application_path %>
+<div class="container-fluid">
+  <div class="row">
+    <%= link_to "Back to jobs", jobs_path, class: 'btn btn-secondary', style: 'margin-left: 50px;' %>
+  </div>
+</div>
+
+<style>
+    .seen-icon {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+    }
+
+    .form-title {
+        color: #fff;
+        padding: 1rem;
+    }
+
+    .form-title h2 {
+        margin: 0;
+    }
+
+    .job-card {
+        margin-left: 50px;
+        margin-right: 50px;
+        margin-bottom: 20px;
+    }
+
+</style>

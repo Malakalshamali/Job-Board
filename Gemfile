@@ -86,5 +86,15 @@ gem 'jquery-rails'
 
 gem 'devise_token_auth'
 gem 'devise'
+gem 'actionmailer'
 
 gem "letter_opener", group: :development
+
+gem 'ajax-datatables-rails'
+gem 'jquery-ui-rails'
+
+gem 'font-awesome-sass'
+
+gem 'turbo-rails'
+
+gem 'turbolinks', '~> 5'

@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   before_action :set_job, only: %i[ show edit update destroy ]
-  skip_before_action :verify_authenticity_token
+  # before_action :authenticate_user!, except: %i[index show]
 
   # GET /jobs or /jobs.json
   def index
@@ -59,14 +59,15 @@ class JobsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_job
-      @job = Job.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def job_params
-        permitted_params = params.require(:job).permit(:id, :title, :description, :company, :location, :job_type, :requirements, :published_at, :expires_at, :created_at, :updated_at)
-        permitted_params
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_job
+    @job = Job.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def job_params
+    permitted_params = params.require(:job).permit(:id, :title, :description, :company, :location, :job_type, :requirements, :published_at, :expires_at, :created_at, :updated_at)
+    permitted_params
+  end
 end

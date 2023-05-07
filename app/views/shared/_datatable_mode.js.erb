@@ -1,0 +1,90 @@
+{
+    const isLargerThanMobileScreen = ($(window).width() > 480);
+    let state_key = window.location.pathname;
+
+    function IsLocalstorageContainsKey(table_id) {
+        let local_storage_datatable_key = 'DataTables_' + table_id + "_" + state_key;
+        if (localStorage.getItem(local_storage_datatable_key) !== null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function getScrollX(table_id) {
+        let local_storage_datatable_key = 'DataTables_' + table_id + "_" + state_key;
+        let local_storage_datatable_value = JSON.parse(localStorage.getItem(local_storage_datatable_key));
+
+        if (IsLocalstorageContainsKey(table_id) && local_storage_datatable_value.hasOwnProperty('scrollX')) {
+            return local_storage_datatable_value['scrollX'];
+        } else {
+            return isLargerThanMobileScreen;
+        }
+    }
+
+    function getResponsive(table_id) {
+        let local_storage_datatable_key = 'DataTables_' + table_id + "_" + state_key;
+        let local_storage_datatable_value = JSON.parse(localStorage.getItem(local_storage_datatable_key));
+
+        if (IsLocalstorageContainsKey(table_id) && local_storage_datatable_value.hasOwnProperty('responsive')) {
+            return local_storage_datatable_value['responsive'];
+        } else {
+            return !(isLargerThanMobileScreen);
+        }
+    }
+
+    function moveToScrollingMode(table_id) {
+        let local_storage_datatable_key = 'DataTables_' + table_id + "_" + state_key;
+        let local_storage_datatable_value = JSON.parse(localStorage.getItem(local_storage_datatable_key));
+        if ((IsLocalstorageContainsKey(table_id))) {
+            if (isLargerThanMobileScreen) {
+                local_storage_datatable_value['scrollX'] = true
+                local_storage_datatable_value['responsive'] = false
+                local_storage_datatable_value['activeClass'] = 'scroll'
+            } else {
+                local_storage_datatable_value['scrollX'] = false
+                local_storage_datatable_value['responsive'] = false
+                local_storage_datatable_value['activeClass'] = 'default'
+            }
+
+            localStorage.setItem(local_storage_datatable_key, JSON.stringify(local_storage_datatable_value))
+        }
+        window.location.reload();
+    }
+
+    function moveToCollapseMode(table_id) {
+        let local_storage_datatable_key = 'DataTables_' + table_id + "_" + state_key;
+        let local_storage_datatable_value = JSON.parse(localStorage.getItem(local_storage_datatable_key));
+        if ((IsLocalstorageContainsKey(table_id))) {
+            local_storage_datatable_value['responsive'] = true
+            local_storage_datatable_value['scrollX'] = false
+            local_storage_datatable_value['activeClass'] = 'collapse'
+            localStorage.setItem(local_storage_datatable_key, JSON.stringify(local_storage_datatable_value))
+        }
+        window.location.reload();
+
+    }
+
+    function getMode(table_id) {
+        let state_key = window.location.pathname;
+        let local_storage_datatable_key = 'DataTables_' + table_id + "_" + state_key;
+        let local_storage_datatable_value = JSON.parse(localStorage.getItem(local_storage_datatable_key));
+        if ((IsLocalstorageContainsKey(table_id))) {
+            return local_storage_datatable_value['activeClass'];
+        }
+    }
+
+    function setButtonStyle(table_id) {
+
+        if (getMode(table_id) == "scroll") {
+            $('#' + table_id + 'scrollBtn').removeClass('activeCollection');
+            $('#' + table_id + 'scrollBtn').addClass('activeCollection');
+        } else if (getMode(table_id) == 'collapse') {
+            $('#' + table_id + 'collapseBtn').removeClass('activeCollection');
+            $('#' + table_id + 'collapseBtn').addClass('activeCollection');
+        }else{
+            $('#' + table_id + 'scrollBtn').removeClass('activeCollection');
+            $('#' + table_id + 'collapseBtn').removeClass('activeCollection');
+        }
+    }
+}

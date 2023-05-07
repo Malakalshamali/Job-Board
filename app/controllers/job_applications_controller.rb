@@ -1,11 +1,15 @@
 class JobApplicationsController < ApplicationController
-  before_action :set_job_application, only: %i[ show edit update destroy ]
-  before_action :set_job, only: %i[ show edit new create update destroy ]
-  before_action :authenticate_user!
+  before_action :set_job_application, only: %i[ show edit update destroy mark_as_seen]
+  before_action :set_job, only: %i[ index show edit update destroy new create ]
+  # before_action :authenticate_user!
 
   # GET /job_applications or /job_applications.json
   def index
-    @job_applications = JobApplication.all
+    @job_applications = if @job.present?
+                          JobApplication.where(job_id: @job.id)
+                        else
+                          JobApplication.all
+                        end
   end
 
   # GET /job_applications/1 or /job_applications/1.json
@@ -27,7 +31,7 @@ class JobApplicationsController < ApplicationController
 
     respond_to do |format|
       if @job_application.save
-        format.html { redirect_to job_application_url(@job_application), notice: "Job application was successfully created." }
+        format.html { redirect_to job_job_application_path(@job, @job_application), notice: "Job application was successfully created." }
         format.json { render :show, status: :created, location: @job_application }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -59,6 +63,12 @@ class JobApplicationsController < ApplicationController
     end
   end
 
+  def mark_as_seen
+    @job_application.update!(status: :seen)
+    flash[:success] = "Job application for #{@job_application.user.email} has been seen"
+    redirect_to job_job_applications_path(job_id: params[:job_id])
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -72,7 +82,7 @@ class JobApplicationsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def job_application_params
-    permitted_params = params.require(:job).permit(:id, :name, :email, :phone, :resume, :cover_letter, :status, :user_id, :job_id, :created_at, :updated_at)
+    permitted_params = params.require(:job_application).permit(:id, :name, :email, :phone, :resume, :cover_letter, :status, :user_id, :job_id, :created_at, :updated_at)
     permitted_params
   end
 

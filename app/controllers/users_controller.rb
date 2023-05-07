@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_user, only: %i[ show edit update destroy]
 
   # GET /users or /users.json
   def index
@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   # GET /users/1 or /users/1.json
   def show
+    @job_applications = JobApplication.where(user_id: @user.id)
   end
 
   # GET /users/new
@@ -64,7 +65,15 @@ class UsersController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
-    def user_params
-      params.fetch(:user, {})
-    end
+  def user_params
+    permitted_params = params.require(:job).permit(:id,:provider,
+                                                   :uid,:encrypted_password, :reset_password_token,
+                                                   :reset_password_sent_at, :allow_password_change,
+                                                   :remember_created_at, :confirmation_token,
+                                                   :confirmed_at, :confirmation_sent_at,
+                                                   :unconfirmed_email, :name,
+                                                   :nickname, :image, :email,
+                                                   :tokens,  :created_at, :updated_at)
+    permitted_params
+  end
 end
