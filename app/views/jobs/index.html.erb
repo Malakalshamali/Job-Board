@@ -1,33 +1,80 @@
-]<div class="form-title bg-primary text-white py-3">
+<div class="form-title bg-primary text-white py-3">
   <h2>Jobs Board</h2>
 </div>
 
-<div class="container-fluid">
+<div class="wrapper wrapper-content animated ">
   <div class="row">
-    <div class="col-4 p-3">
-      <%= link_to "New job", new_job_path, class: "btn btn-primary" %>
-    </div>
-  </div>
-</div>
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-4 p-3">
+              <%= link_to "New job", new_job_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
 
-<div class="row">
-  <% @jobs.each do |job| %>
-    <div class="col-md-4">
-      <div class="card job-card">
-        <div class="card-body">
-          <%= link_to 'Apply', new_job_job_application_path(job_id: job.id), class: 'btn btn-primary', style: 'float: right;' %>
-          <h5 class="card-title"><%= job.title %></h5>
-          <p class="card-text"><strong>Company:</strong> <%= job.company %></p>
-          <p class="card-text"><strong>Location:</strong> <%= job.location %></p>
-          <p class="card-text"><strong>Job Type:</strong> <%= job.job_type %></p>
-          <p class="card-text"><strong>Published At:</strong> <%= job.published_at %></p>
-          <p class="card-text"><strong>Expires At:</strong> <%= job.expires_at %></p>
-          <%= button_to "Destroy", @job, method: :delete, class: 'btn btn-danger', style: 'float: right; margin-left: 10px;' %>
-          <%= link_to 'View', job_path(job), class: 'btn btn-primary', style: 'float: right; margin-left: 10px;' %>
+        <div class="row" , style="margin-left: 30px">
+          <div class="col-lg-12">
+            <%= search_form_for @q do |f| %>
+              <div class="row">
+                <div class="col-lg-4">
+                  <%= f.label :title_eq, 'Job Title' %>
+                  <%= f.select(:title_eq, options_for_select(Job.group(:title).pluck(:title).uniq, (params[:q].nil? ? '' : params[:q][:title_eq])),
+                               { :include_blank => 'Select Title' }, { multiple: false, class: "form-control select2", 'data-allow-clear' => 'true', 'data-placeholder' => 'Select Title' }) %>
+                </div>
+                <div class="col-lg-4">
+                  <%= f.label :company_eq, 'Company' %>
+                  <%= f.select(:company_eq, options_for_select(Job.group(:company).pluck(:company).uniq, (params[:q].nil? ? '' : params[:q][:company_eq])),
+                               { :include_blank => 'Select Company' }, { multiple: false, class: "form-control select2", 'data-allow-clear' => 'true', 'data-placeholder' => 'Select Company' }) %>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-lg-3">
+                  <%= f.label :created_at_gteq, 'Created Date/from' %>
+                  <%= f.date_field :created_at_gteq, class: 'form-control', value: params[:q].nil? ? '' : params[:q][:created_at_gteq] %>
+                </div>
+                <div class="col-lg-3">
+                  <%= f.label :created_at_lteq, 'Created Date/to' %>
+                  <%= f.date_field :created_at_lteq, class: 'form-control', value: params[:q].nil? ? '' : params[:q][:created_at_lteq] %>
+                </div>
+              </div>
+              <br>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <%= f.submit class: 'btn btn-primary btn-sm float-right mr-3' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <br>
+
+        <div class="row">
+          <% if @jobs.present? %>
+            <% @jobs.each do |job| %>
+              <div class="col-md-4">
+                <div class="card job-card">
+                  <div class="card-body">
+                    <%= link_to 'Apply', new_job_job_application_path(job_id: job.id), class: 'btn btn-primary', style: 'float: right;' %>
+                    <h5 class="card-title"><%= job.title %></h5>
+                    <p class="card-text"><strong>Company:</strong> <%= job.company %></p>
+                    <p class="card-text"><strong>Location:</strong> <%= job.location %></p>
+                    <p class="card-text"><strong>Job Type:</strong> <%= job.job_type %></p>
+                    <p class="card-text"><strong>Published At:</strong> <%= job.published_at %></p>
+                    <p class="card-text"><strong>Expires At:</strong> <%= job.expires_at %></p>
+                    <%= button_to "Destroy", @job, method: :delete, class: 'btn btn-danger', style: 'float: right; margin-left: 10px;' %>
+                    <%= link_to 'View', job_path(job), class: 'btn btn-primary', style: 'float: right; margin-left: 10px;' %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <h2 style="margin-left: 30px">There are no jobs!</h2>
+          <% end %>
         </div>
       </div>
     </div>
-  <% end %>
+  </div>
 </div>
 
 <style>
@@ -47,3 +94,12 @@
     }
 
 </style>
+
+
+<script type="module" src="https://code.jquery.com/jquery-3.3.1.min.js">
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+
+
+</script>

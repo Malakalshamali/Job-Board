@@ -4,10 +4,10 @@ class JobApplicationDatatable < AjaxDatatablesRails::ActiveRecord
   # def_delegators :@view, :link_to, :JobApplication_path, :edit_JobApplication_path, :company_path, :can_current_ability
   def_delegators :@view, :link_to
 
-    def initialize(params, opts = {})
-      @view = opts[:view_context]
-      super
-    end
+  def initialize(params, opts = {})
+    @view = opts[:view_context]
+    super
+  end
 
   def view_columns
     hash = {}
@@ -36,7 +36,7 @@ class JobApplicationDatatable < AjaxDatatablesRails::ActiveRecord
 
       hash[:actions] = get_actions(record)
 
-      hash.each do |key, value|
+      hash.each do |key, _value|
         hash.delete(key) unless key.in?(@view_columns.keys)
       end
       hash

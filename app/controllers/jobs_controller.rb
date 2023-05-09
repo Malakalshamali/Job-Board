@@ -1,14 +1,18 @@
+include Ransack::Helpers::FormHelper
+
 class JobsController < ApplicationController
-  before_action :set_job, only: %i[ show edit update destroy ]
-  # before_action :authenticate_user!, except: %i[index show]
+  before_action :set_job, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show]
 
   # GET /jobs or /jobs.json
   def index
-    @jobs = Job.all
+    @q = params.dig(:q).present? ? Job.ransack(params[:q].merge!(expires_at_lteq: Time.now.to_date)) : Job.ransack({ expires_at_gteq: Time.now.to_date })
+    @jobs = @q.result
   end
 
   # GET /jobs/1 or /jobs/1.json
   def show
+    @job_applications = @job.job_applications
   end
 
   # GET /jobs/new
@@ -17,8 +21,7 @@ class JobsController < ApplicationController
   end
 
   # GET /jobs/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /jobs or /jobs.json
   def create
@@ -26,7 +29,7 @@ class JobsController < ApplicationController
 
     respond_to do |format|
       if @job.save
-        format.html { redirect_to job_url(@job), notice: "Job was successfully created." }
+        format.html { redirect_to job_url(@job), notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +42,7 @@ class JobsController < ApplicationController
   def update
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to job_url(@job), notice: "Job was successfully updated." }
+        format.html { redirect_to job_url(@job), notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +56,7 @@ class JobsController < ApplicationController
     @job.destroy
 
     respond_to do |format|
-      format.html { redirect_to jobs_url, notice: "Job was successfully destroyed." }
+      format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -67,7 +70,7 @@ class JobsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def job_params
-    permitted_params = params.require(:job).permit(:id, :title, :description, :company, :location, :job_type, :requirements, :published_at, :expires_at, :created_at, :updated_at)
-    permitted_params
+    params.require(:job).permit(:id, :title, :description, :company, :location, :job_type,
+                                :requirements, :published_at, :expires_at, :created_at, :updated_at)
   end
 end

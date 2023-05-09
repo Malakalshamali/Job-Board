@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy]
+  before_action :set_user, only: %i[show edit update destroy]
+  before_action :authenticate_user!
 
   # GET /users or /users.json
   def index
@@ -17,8 +18,7 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /users or /users.json
   def create
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
+        format.html { redirect_to user_url(@user), notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
+        format.html { redirect_to user_url(@user), notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,27 +53,27 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
+      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
   def user_params
-    permitted_params = params.require(:job).permit(:id,:provider,
-                                                   :uid,:encrypted_password, :reset_password_token,
-                                                   :reset_password_sent_at, :allow_password_change,
-                                                   :remember_created_at, :confirmation_token,
-                                                   :confirmed_at, :confirmation_sent_at,
-                                                   :unconfirmed_email, :name,
-                                                   :nickname, :image, :email,
-                                                   :tokens,  :created_at, :updated_at)
-    permitted_params
+    params.require(:job).permit(:id, :provider,
+                                :uid, :encrypted_password, :reset_password_token,
+                                :reset_password_sent_at, :allow_password_change,
+                                :remember_created_at, :confirmation_token,
+                                :confirmed_at, :confirmation_sent_at,
+                                :unconfirmed_email, :name,
+                                :nickname, :image, :email,
+                                :tokens, :created_at, :updated_at)
   end
 end
