@@ -1,5 +1,6 @@
 <% if user_signed_in? %>
   <%= link_to '⬅️ Sign Out', destroy_user_session_path, method: :delete, class: 'btn btn-primary' , style: 'float: right;margin-top: 20px; margin-right: 30px' %>
 <% end %>
-<%= link_to "📑 My Applications", user_path(id: current_user), class: 'btn btn-primary', style: 'float: right;margin-top: 20px; margin-right: 30px' if current_user.present?%>
-
+<% if can?(:read, @user) %>
+  <%= link_to "📑 My Applications", user_path(id: current_user), class: 'btn btn-primary', style: 'float: right;margin-top: 20px; margin-right: 30px' if current_user.present?%>
+<% end %>

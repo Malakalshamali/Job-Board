@@ -9,7 +9,9 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-4 p-3">
-              <%= link_to "New job", new_job_path, class: "btn btn-primary" %>
+              <% if can?(:create, @job) %>
+                <%= link_to "New job", new_job_path, class: "btn btn-primary" %>
+              <% end %>
             </div>
           </div>
         </div>
@@ -62,7 +64,9 @@
                     <p class="card-text"><strong>Job Type:</strong> <%= job.job_type %></p>
                     <p class="card-text"><strong>Published At:</strong> <%= job.published_at %></p>
                     <p class="card-text"><strong>Expires At:</strong> <%= job.expires_at %></p>
-                    <%= button_to "Destroy", @job, method: :delete, class: 'btn btn-danger', style: 'float: right; margin-left: 10px;' %>
+                    <% if can?(:delete, @job) %>
+                      <%= button_to "Destroy", @job, method: :delete, class: 'btn btn-danger', style: 'float: right; margin-left: 10px;' %>
+                    <% end %>
                     <%= link_to 'View', job_path(job), class: 'btn btn-primary', style: 'float: right; margin-left: 10px;' %>
                   </div>
                 </div>

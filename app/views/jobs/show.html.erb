@@ -21,63 +21,67 @@
 
       <div class="container-fluid">
         <div class="row">
-          <%= link_to "Edit", edit_job_path(@job), class: 'btn btn-primary btn-lg', style: 'margin-left: 10px;' %>
+          <%= if can?(:edit, @job) %>
+            <%= link_to "Edit", edit_job_path(@job), class: 'btn btn-primary btn-lg', style: 'margin-left: 10px;' %>
+          <% end %>
           <%= link_to "Back", jobs_path, class: 'btn btn-secondary btn-lg', style: 'margin-left: 10px;' %>
-          <%= button_to "Destroy", @job, method: :delete, class: 'btn btn-danger btn-lg', style: 'margin-left: 10px;' %>
+          <%= if can?(:delete, @job) %>
+            <%= button_to "Destroy", @job, method: :delete, class: 'btn btn-danger btn-lg', style: 'margin-left: 10px;' %>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
 <% end %>
-
-
 <br>
 <br>
-<div class="row">
-  <div class="col-lg-12">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <div class="form-title bg-primary text-white py-2">
-          <h5 style="margin-left: 20px">
-            Job Application
-          </h5>
+<%= if can?(:delete, @job) %>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <div class="form-title bg-primary text-white py-2">
+            <h5 style="margin-left: 20px">
+              Job Application
+            </h5>
+          </div>
         </div>
-      </div>
-      <br>
-      <div class="ibox-content">
-        <div class="row">
-          <div class="col-lg-12">
-            <% if @job_applications.present? %>
-              <div class="row">
-                <% @job_applications.each do |job_application| %>
-                  <div class="col-md-4">
-                    <div class="card job-card">
-                      <div class="card-body">
-                        <% if job_application.not_seen? %>
-                          <p class="card-title"> <%= link_to 'Mark as Seen', mark_as_seen_job_job_application_path(job_id: @job.id, id: job_application.id), class: 'btn btn-primary', style: 'float: right;' %></p>
-                      <% else %>
-                          <p class="card-text" style="float: right;"><span class="seen-icon">✅</span>
-                            <strong>Seen</strong>
-                        <% end %>
-                        <p class="card-text"></p>
-                        <p class="card-text"><strong>Name:</strong> <%= job_application.name %></p>
-                        <p class="card-text"><strong>Email:</strong> <%= job_application.email %></p>
-                        <p class="card-text"><strong>Cover Letter:</strong> <%= job_application.cover_letter %></p>
-                        <p class="card-text"><strong>Resume:</strong> <%= job_application.resume %></p>
+        <br>
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-lg-12">
+              <% if @job_applications.present? %>
+                <div class="row">
+                  <% @job_applications.each do |job_application| %>
+                    <div class="col-md-4">
+                      <div class="card job-card">
+                        <div class="card-body">
+                          <% if job_application.not_seen? %>
+                            <p class="card-title"> <%= link_to 'Mark as Seen', mark_as_seen_job_job_application_path(job_id: @job.id, id: job_application.id), class: 'btn btn-primary', style: 'float: right;' %></p>
+                          <% else %>
+                            <p class="card-text" style="float: right;"><span class="seen-icon">✅</span>
+                              <strong>Seen</strong>
+                          <% end %>
+                          <p class="card-text"></p>
+                          <p class="card-text"><strong>Name:</strong> <%= job_application.name %></p>
+                          <p class="card-text"><strong>Email:</strong> <%= job_application.email %></p>
+                          <p class="card-text"><strong>Cover Letter:</strong> <%= job_application.cover_letter %></p>
+                          <p class="card-text"><strong>Resume:</strong> <%= job_application.resume %></p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                <% end %>
-              </div>
-            <% else %>
-              <h2>There are no job applications yet!</h2>
-            <% end %>
+                  <% end %>
+                </div>
+              <% else %>
+                <h2>There are no job applications yet!</h2>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <style>
     body {
