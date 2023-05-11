@@ -12,6 +12,7 @@ class JobsController < ApplicationController
 
   # GET /jobs/1 or /jobs/1.json
   def show
+    byebug
     @job_applications = @job.job_applications
   end
 

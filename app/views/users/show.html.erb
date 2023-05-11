@@ -3,9 +3,6 @@
     <h3 style="margin-top: 10px; margin-left: 10px;" >  <%= @user.email %></h3></h4>
 </div>
 
-
-<p style="color: green"><%= notice %></p>
-
 <% if @job_applications.present? %>
   <div class="row">
     <% @job_applications.each do |job_application| %>
@@ -13,7 +10,11 @@
         <div class="card job-card">
           <div class="card-body">
             <% if job_application.not_seen? %>
-              <p class="card-text" style="float: right;"><span class="seen-icon">❌</span> <strong>Seen</strong>
+              <% if can?(:create, job_application) %>
+                <p class="card-title"> <%= link_to 'Mark as Seen', mark_as_seen_job_job_application_path(job_id: @job.id, id: job_application.id), class: 'btn btn-primary', style: 'float: right;' %></p>
+              <% else %>
+                <p class="card-text" style="float: right;"><span class="seen-icon">❌</span> <strong>Seen</strong>
+              <% end %>
             <% else %>
               <p class="card-text" style="float: right;"><span class="seen-icon">✅</span> <strong>Seen</strong>
             <% end %>
