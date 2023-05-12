@@ -2,6 +2,7 @@ require 'aws-sdk-s3'
 class ApplicationController < ActionController::Base
   # include DeviseTokenAuth::Concerns::SetUserByToken
   before_action :authenticate_user!
+  add_flash_types :info, :error, :warning
 
   def after_sign_out_path_for(_resource_or_scope)
     root_path
